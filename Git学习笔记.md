@@ -389,11 +389,106 @@ If you are sure you want to delete it, run 'git branch -D testing'.
 它们以 `(remote)/(branch)` 形式命名。
 
 
+- 推送
+
+- 跟踪分支
+
+- 拉取
+
+- 删除远程分支
+
 ## 3.6 变基
+  在 Git 中整合来自不同分支的修改主要有两种方法：`merge` 以及 `rebase`。
+
+- 变基的基本操作
+  使用 `rebase` 命令将提交到某一分支上的所有修改都移至另一分支上。
+
+  <pre><code>
+  $ git checkout experiment
+  $ git rebase master
+  First, rewinding head to replay your work on top of it...
+  Applying: added staged command
+  </pre></code>
+
+  <pre><code>
+  $ git checkout master
+  $ git merge experiment
+  </pre></code>
+
+  ![Alt text](https://git-scm.com/book/en/v2/book/03-git-branching/images/interesting-rebase-1.png)
+
+  `$ git rebase --onto master server client` “取出 client 分支，找出处于 `client` 分支和 `server` 分支的共同祖先之后的修改，然后把它们在 `master` 分支上重演一遍”。
+
+  <pre><code>
+  $ git checkout master
+  $ git merge client
+
+  ![Alt text](https://git-scm.com/book/en/v2/book/03-git-branching/images/interesting-rebase-3.png)
+
+  `$ git rebase master server`
+
+  ![Alt](https://git-scm.com/book/en/v2/book/03-git-branching/images/interesting-rebase-4.png)
+
+<pre><code>
+  $ git checkout master
+  $ git merge server
+
+  ![Alt](https://git-scm.com/book/en/v2/book/03-git-branching/images/interesting-rebase-5.png)
+
+
+- 变基的风险
+
+  <strong>不要对在你的仓库外有副本的分支执行变基。
+
+- 用变基解决变基
+  `git pull --rebase`
+
+  <strong>需要精读
+
+- 变基 vs. 合并
 
 # 4. 服务器上的 Git
 ## 4.1 协议
+- 本地协议
+
+  `$ git clone file:///opt/git/project.git` 克隆一个本地版本库
+
+- HTTP 协议
+  - 智能（Smart） HTTP 协议
+    - 优点
+      - 可以使用用户名／密码授权
+      - HTTP/S 协议被广泛使用，一般的企业防火墙都会允许这些端口的数据通过。
+    - 缺点
+      - 架设 HTTP/S 协议的服务端会比 SSH 协议的棘手一些。
+  - 哑（Dumb） HTTP 协议
+
+- SSH 协议
+  - 优点
+    - SSH 架设相对简单
+    - 通过 SSH 访问是安全的
+    - 与 HTTP/S 协议、Git 协议及本地协议一样，SSH 协议很高效，在传输前也会尽量压缩数据。
+  - 缺点： 不能通过他实现匿名访问
+
+- Git 协议
+  - 优点：使用的网络传输协议里最快的。
+  - 缺点：缺乏授权机制。
+
 ## 4.2 在服务器上搭建 Git
+- 现有仓库导出为裸仓库
+
+  `$ git clone --bare my_project my_project.git`
+
+- 把裸仓库放到服务器上
+
+  `$ scp -r my_project.git user@git.example.com:/opt/git`
+
+- 小型安装
+  - 提供访问权限（SSH 连接）
+    - 给团队里的每个人创建账号，这种方法很直接但也很麻烦。
+    - 在主机上建立一个 git 账户，让每个需要写权限的人发送一个 SSH 公钥，然后将其加入 git 账户的 ~/.ssh/authorized_keys 文件。
+    - 让 SSH 服务器通过某个 LDAP 服务，或者其他已经设定好的集中授权机制，来进行授权。 只要每个用户可以获得主机的 shell 访问权限，任何 SSH 授权机制你都可视为是有效的。
+
+
 ## 4.3 生成 SSH 公钥
 ## 4.4 配置服务器
 ## 4.5 Git 守护进程
