@@ -440,7 +440,7 @@ If you are sure you want to delete it, run 'git branch -D testing'.
 
 - 变基的风险
 
-  <strong>不要对在你的仓库外有副本的分支执行变基。
+  <strong>不要对在你的仓库外有副本的分支执行变基。</strong>
 
 - 用变基解决变基
   `git pull --rebase`
