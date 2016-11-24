@@ -319,9 +319,76 @@ Git学习笔记
   <strong>分支切换会改变你工作目录中的文件</strong>
 
 ## 3.2 分支的新建与合并
+
+- 新建分支
+
+  `$ git checkout -b iss53`
+
+  相当于两条命令：
+
+  <pre><code>
+  $ git branch iss53
+  $ git checkout iss53
+  </pre></code>
+
+- 分支的合并
+
+  <pre><code>
+  $ git checkout master
+  Switched to branch 'master'
+  $ git merge iss53
+  Merge made by the 'recursive' strategy.
+  index.html |    1 +
+  1 file changed, 1 insertion(+)
+  </pre></code>
+
+  删除已经完成的分支:`$ git branch -d iss53`
+
+- 遇到冲突时的分支合并
+  冲突完了之后使用:
+
+   `git add` 命令来将其标记为冲突已解决。
+
+   `git mergetool` 使用图形化工具来解决冲突
+
 ## 3.3 分支管理
+- `git branch`  会得到当前所有分支的一个列表
+
+- `git branch -v` 查看每一个分支的最后一次提交
+
+- `--merged` 与 `--no-merged` 这两个有用的选项可以过滤这个列表中已经合并或尚未合并到当前分支的分支。
+
+- `git branch -d` 删除非当前无用分支
+
+查看所有包含未合并工作的分支，可以运行 `git branch --no-merged`：
+
+`$ git branch --no-merged`
+
+  testing
+这里显示了其他分支。 因为它包含了还未合并的工作，尝试使用` git branch -d `命令删除它时会失败：
+
+<pre><code>
+$ git branch -d testing
+error: The branch 'testing' is not fully merged.
+If you are sure you want to delete it, run 'git branch -D testing'.
+</pre></code>
+如果真的想要删除分支并丢掉那些工作，如同帮助信息里所指出的，可以使用 `-D` 选项强制删除它。
+
 ## 3.4 分支开发工作流
+
+- 长期分支
+
+  流水线（work silos）
+
+- 特性分支
+
+  特性分支是一种短期分支，它被用来实现单一特性或其相关工作。
+
 ## 3.5 远程分支
+
+它们以 `(remote)/(branch)` 形式命名。
+
+
 ## 3.6 变基
 
 # 4. 服务器上的 Git
