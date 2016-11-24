@@ -422,6 +422,7 @@ If you are sure you want to delete it, run 'git branch -D testing'.
   <pre><code>
   $ git checkout master
   $ git merge client
+  </pre></code>
 
   ![Alt text](https://git-scm.com/book/en/v2/book/03-git-branching/images/interesting-rebase-3.png)
 
@@ -429,9 +430,10 @@ If you are sure you want to delete it, run 'git branch -D testing'.
 
   ![Alt](https://git-scm.com/book/en/v2/book/03-git-branching/images/interesting-rebase-4.png)
 
-<pre><code>
+  <pre><code>
   $ git checkout master
   $ git merge server
+  </pre></code>
 
   ![Alt](https://git-scm.com/book/en/v2/book/03-git-branching/images/interesting-rebase-5.png)
 
@@ -490,8 +492,12 @@ If you are sure you want to delete it, run 'git branch -D testing'.
 
 
 ## 4.3 生成 SSH 公钥
+
 ## 4.4 配置服务器
+
 ## 4.5 Git 守护进程
+
+
 ## 4.6 Smart HTTP
 ## 4.7 GitWeb
 ## 4.8 GitLab
