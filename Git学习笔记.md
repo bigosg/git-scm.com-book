@@ -445,7 +445,7 @@ If you are sure you want to delete it, run 'git branch -D testing'.
 - 用变基解决变基
   `git pull --rebase`
 
-  <strong>需要精读
+  <strong>需要精读</strong>
 
 - 变基 vs. 合并
 
