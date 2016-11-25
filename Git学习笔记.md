@@ -610,24 +610,175 @@ What now>
 - 清理工作目录
 
   ` git clean`
-  
+
 ## 7.4 签署工作
+- GPG 介绍
+- 签署标签
+- 验证标签
+- 每个人必须签署
+
+
 ## 7.5 搜索
+- Git Grep
+- Git 日志搜索
+
 ## 7.6 重写历史
+- 修改最后一次提交
+
+  `$ git commit --amend`
+- 修改多个提交信息
+
+  `$ git rebase -i HEAD~3`
+
+- 重新排序提交
+
+- 压缩提交
+
+- 拆分提交
+
+- 核武器级选项：filter-branch
+  - 从每一个提交移除一个文件
+  - 使一个子目录做为新的根目录
+  - 全局修改邮箱地址
+
 ## 7.7 重置揭密
+
+- 三棵树
+- 工作流程
+- 重置的作用
+- 通过路径来重置
+- 压缩
+- 检出
+- 总结
+
 ## 7.8 高级合并
+- 合并冲突
+- 撤消合并
+- 其他类型的合并
+
 ## 7.9 Rerere
+
+- `git rerere`
+
 ## 7.10 使用 Git 调试
+- 文件标注
+
+  `git blame`
+
+- 二分查找
+
+  `git bisect`
+
 ## 7.11 子模块
-## 7.12 打包
+
+- 开始使用子模块
+
+  <pre><code>
+  $ git submodule add https://github.com/chaconinc/DbConnector
+  Cloning into 'DbConnector'...
+  remote: Counting objects: 11, done.
+  remote: Compressing objects: 100% (10/10), done.
+  remote: Total 11 (delta 0), reused 11 (delta 0)
+  Unpacking objects: 100% (11/11), done.
+  Checking connectivity... done.
+  </pre></code>
+
+- 克隆含有子模块的项目
+- 在包含子模块的项目上工作
+- 子模块技巧
+- 子模块的问题
+
+## 7.12 打包 （没网络的情况）
+
+- 打包
+
+  <pre><code>
+  $ git bundle create repo.bundle HEAD master
+  Counting objects: 6, done.
+  Delta compression using up to 2 threads.
+  Compressing objects: 100% (2/2), done.
+  Writing objects: 100% (6/6), 441 bytes, done.
+  Total 6 (delta 0), reused 0 (delta 0)
+  </pre></code>
+
+- 解包
+
+  <pre><code>
+  $ git clone repo.bundle repo
+  Initialized empty Git repository in /private/tmp/bundle/repo/.git/
+  $ cd repo
+  $ git log --oneline
+  9a466c5 second commit
+  b1ec324 first commit
+  </pre></code>
+
+- 检查
+  <pre><code>
+  $ git bundle verify ../commits-bad.bundle
+  error: Repository lacks these prerequisite commits:
+  error: 7011d3d8fc200abe0ad561c011c3852a4b7bbe95 third commit - second repo
+  </pre></code>
+
 ## 7.13 替换
 ## 7.14 凭证存储
+
+- 底层实现
+- 自定义凭证缓存
+
 ## 7.15 总结
 
 # 8 自定义 Git
 ## 8.1 配置 Git
+
+- 客户端基本配置
+
+  `$ man git-config`
+
+- Git 中的着色
+
+  `$ git config --global color.ui false`
+
+- 外部的合并与比较工具
+
+  `P4Merge`
+
+- 格式化与多余的空白字符
+
+- 服务器端配置
+
 ## 8.2 Git 属性
+
+- 二进制文件
+  - 识别二进制文件
+  - 比较二进制文件
+
+- 关键字展开
+- 导出版本库
+- 合并策略
+
 ## 8.3 Git 钩子
+
+- 安装一个钩子
+- 客户端钩子
+  - 提交工作流钩子
+    - `pre-commit` 钩子在键入提交信息前运行。 它用于检查即将提交的快照
+    - `prepare-commit-msg` 钩子在启动提交信息编辑器之前，默认信息被创建之后运行。 它允许你编辑提交者所看到的默认信息。
+    - `commit-msg `钩子接收一个参数，此参数即上文提到的，存有当前提交信息的临时文件的路径。
+    - ` post-commit `钩子在整个提交过程完成后运行。 它不接收任何参数，但你可以很容易地通过运行 git log -1 HEAD 来获得最后一次的提交信息。 该钩子一般用于通知之类的事情。
+  - 电子邮件工作流钩子`git am`
+    - ` applypatch-msg `。 它接收单个参数：包含请求合并信息的临时文件的名字。
+    - ` pre-applypatch` 。 有些难以理解的是，它正好运行于应用补丁 之后，产生提交之前，所以你可以用它在提交前检查快照。
+  - 其它钩子
+    - `pre-rebase`钩子运行于变基之前，以非零值退出可以中止变基的过程。
+    - `post-rewrite` 钩子被那些会替换提交记录的命令调用，比如 `git commit --amend` 和`git rebase`（不过不包括 git filter-branch）。
+    - 在 git checkout 成功运行后，`post-checkout` 钩子会被调用。
+    - 在 git merge 成功运行后，`post-merge `钩子会被调用。
+    - `pre-push `钩子会在 git push 运行期间， 更新了远程引用但尚未传送对象时被调用。
+  - 服务器端钩子
+    - `pre-receive` 它从标准输入获取一系列被推送的引用。如果它以非零值退出，所有的推送内容都不会被接受。 你可以用这个钩子阻止对引用进行非快进（non-fast-forward）的更新，或者对该推送所修改的所有引用和文件进行访问控制。
+    - `update `脚本和 `pre-receive` 脚本十分类似，不同之处在于它会为每一个准备更新的分支各运行一次。
+    - `post-receive`挂钩在整个过程完结以后运行，可以用来更新其他系统服务或者通知用户。
+
 ## 8.4 使用强制策略的一个例子
 ## 8.5 总结
 
