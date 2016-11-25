@@ -497,7 +497,6 @@ If you are sure you want to delete it, run 'git branch -D testing'.
 
 ## 4.5 Git 守护进程
 
-
 ## 4.6 Smart HTTP
 ## 4.7 GitWeb
 ## 4.8 GitLab
@@ -507,8 +506,44 @@ If you are sure you want to delete it, run 'git branch -D testing'.
 
 # 5. 分布式 Git
 ## 5.1 分布式工作流程
+- 集中式工作流
+
+  一个中心集线器，或者说仓库，可以接受代码，所有人将自己的工作与之同步。 若干个开发者则作为节点——也就是中心仓库的消费者——并且与其进行同步。
+
+- 集成管理者工作流 (感觉和github目前很像)
+  - 项目维护者推送到主仓库。
+  - 贡献者克隆此仓库，做出修改。
+  - 贡献者将数据推送到自己的公开仓库。
+  - 贡献者给维护者发送邮件，请求拉取自己的更新。
+  - 维护者在自己本地的仓库中，将贡献者的仓库加为远程仓库并合并修改。
+  - 维护者将合并后的修改推送到主仓库。
+
+- 司令官与副官工作流
+
+  这其实是多仓库工作流程的变种。 一般拥有数百位协作开发者的超大型项目才会用到这样的工作方式，例如著名的 Linux 内核项目。 被称为副官（lieutenant）的各个集成管理者分别负责集成项目中的特定部分。 所有这些副官头上还有一位称为司令官（dictator）的总集成管理者负责统筹。 司令官维护的仓库作为参考仓库，为所有协作者提供他们需要拉取的项目代码。
+
 ## 5.2 向一个项目贡献
+- 提交准则
+  - 首先，你不会想要把空白错误（根据 git help diff 的描述，结合下面给出的图片，空白错误是指行尾的空格、Tab 制表符，和行首空格后跟 Tab 制表符的行为）提交上去。
+  - 尝试让每一个提交成为一个逻辑上的独立变更集。
+  - 提交信息。 有一个创建优质提交信息的习惯会使 Git 的使用与协作容易的多。
+
+- 私有小型团队
+- 私有管理团队
+- 派生的公开项目
+- 通过邮件的公开项目
+
 ## 5.3 维护项目
+- 在特性分支中工作
+- 应用来自邮件的补丁
+- 检出远程分支
+- 确定引入了哪些东西
+- 将贡献的工作整合进来
+- 为发布打标签
+- 生成一个构建号
+- 准备一次发布
+- 制作提交简报
+
 ## 5.4 总结
 
 # 6. GitHub
@@ -521,8 +556,61 @@ If you are sure you want to delete it, run 'git branch -D testing'.
 
 # 7. Git 工具
 ## 7.1 选择修订版本
+- 单个修订版本
+- 简短的 SHA-1
+- 分支引用
+- 引用日志
+
+  `git reflog`
+
+  `$ git show HEAD@{5}`: 查看仓库中 HEAD 在五次前的所指向的提交
+
+  `$ git show master@{yesterday}` :查看你的 master 分支在昨天的时候指向了哪个提交
+
+- 祖先引用
+- 提交区间
+  - 双点
+  - 多点
+  - 三点
+
 ## 7.2 交互式暂存
+<pre><code>
+$ git add -i
+           staged     unstaged path
+  1:    unchanged        +0/-1 TODO
+  2:    unchanged        +1/-1 index.html
+  3:    unchanged        +5/-1 lib/simplegit.rb
+*** Commands ***
+  1: status     2: update      3: revert     4: add untracked
+  5: patch      6: diff        7: quit       8: help
+What now>
+</pre></code>
+
+- 暂存与取消暂存文件
+
+  `What now> 2`
+
+- 暂存补丁
+
 ## 7.3 储藏与清理
+- 储藏工作
+
+  `git stash 或 git stash save：` :想要切换分支，但是还不想要提交之前的工作；所以储藏修改。 将新的储藏推送到栈上。
+
+  `git stash list`:查看储藏的东西
+
+  `git stash apply`: 将刚刚储藏的工作重新应用
+
+  `git stash apply stash@{2}。` :想要应用其中一个更旧的储藏，可以通过名字指定它。
+
+- 创造性的储藏
+
+- 从储藏创建一个分支
+
+- 清理工作目录
+
+  ` git clean`
+  
 ## 7.4 签署工作
 ## 7.5 搜索
 ## 7.6 重写历史
